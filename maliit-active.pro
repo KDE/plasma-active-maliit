@@ -40,3 +40,7 @@ QMAKE_EXTRA_TARGETS += dist
 dist.target = dist
 dist.commands += git archive HEAD --prefix=$$DIST_NAME/ | bzip2 > $$TARBALL_PATH;
 dist.commands += md5sum $$TARBALL_PATH | cut -d \' \' -f 1 > $$DIST_PATH\\.md5
+
+im.files = maliitactiveinputmethod.sh
+im.path = /usr/env
+INSTALLS += im
