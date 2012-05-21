@@ -52,12 +52,13 @@ Rectangle {
 
         PluginClose {
             id: pluginClose
-            Item {
+            MouseArea {
                 width: canvas.width
                 height: canvas.height
                 LandscapeVKB {
                     id: vkb_landscape
                 }
+                onClicked: pluginClose.state = "closed"
             }
         }
 

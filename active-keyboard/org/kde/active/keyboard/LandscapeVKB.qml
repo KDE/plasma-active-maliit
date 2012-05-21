@@ -41,6 +41,7 @@ PlasmaCore.FrameSvgItem {
     y: pluginClose.atBottom ? parent.height - height + margins.bottom + translation : - margins.top - translation
 
     property bool shown: pluginClose.state != "closed"
+    onShownChanged: if (!shown) accentsPopup.visible = false
     property real translation: shown ? 0 : height
     
 
@@ -76,6 +77,12 @@ PlasmaCore.FrameSvgItem {
             }
         }
     }
+    //avoid to dismiss the keyboard
+    MouseArea {
+        anchors.fill: parent
+        onClicked: mouse.accepted = true
+    }
+    //dismiss accents popup
     MouseArea {
         anchors.fill: parent
         z: accentsPopup.z -1
