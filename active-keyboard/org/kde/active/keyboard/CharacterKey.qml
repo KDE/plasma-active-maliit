@@ -92,8 +92,10 @@ Item {
 
         onPressAndHold: {
             if (isNormal && aCharKey.accents.length > 0) {
+                var pos = aCharKey.mapToItem(vkb, 0, - aCharKey.height)
                 accentsPopup.accents = aCharKey.accents
-                accentsPopup.y = mouse_area.mapToItem(accentsPopup, 0, - aCharKey.height).y
+                accentsPopup.y = pos.y
+                accentsPopup.x = Math.min(pos.x, vkb.width - accentsPopup.width)
                 accentsPopup.visible = true
             } else {
                 charRepeater.start()
