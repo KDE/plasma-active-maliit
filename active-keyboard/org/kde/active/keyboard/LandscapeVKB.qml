@@ -38,8 +38,13 @@ PlasmaCore.FrameSvgItem {
     imagePath: "dialogs/background"
     width:  mainColumn.width + margins.left + margins.right
     height: mainColumn.height + margins.top + margins.bottom
-    y: pluginClose.atBottom ? parent.height - height + margins.bottom : - margins.top
-                    anchors.horizontalCenter: parent.horizontalCenter
+    y: pluginClose.atBottom ? parent.height - height + margins.bottom + translation : - margins.top - translation
+
+    property bool shown: pluginClose.state != "closed"
+    property real translation: shown ? 0 : height
+    
+
+    anchors.horizontalCenter: parent.horizontalCenter
 
     z: 100
     property variant row1:["q1€", "w2£", "e3$", "r4¥", "t5₹", "y6%", "u7<", "i8>", "o9[", "p0]"]
@@ -60,6 +65,17 @@ PlasmaCore.FrameSvgItem {
     property bool inSymView: false
     property bool inSymView2: false
 
+    Behavior on y {
+        SequentialAnimation {
+            NumberAnimation {
+                duration: 250
+                easing.type: Easing.InOutQuad
+            }
+            ScriptAction {
+                script: if (!shown) MInputMethodQuick.userHide()
+            }
+        }
+    }
     MouseArea {
         anchors.fill: parent
         z: accentsPopup.z -1

@@ -39,6 +39,7 @@ Rectangle {
     height: MInputMethodQuick.screenHeight
     color: "transparent"
     opacity: 1
+    onVisibleChanged: if (visible) pluginClose.state = "open"
 
     Rectangle {
         id: root
@@ -56,12 +57,6 @@ Rectangle {
                 height: canvas.height
                 LandscapeVKB {
                     id: vkb_landscape
-                    
-                    Behavior on y {
-                        NumberAnimation {
-                            duration: 250
-                        }
-                    }
                 }
             }
         }

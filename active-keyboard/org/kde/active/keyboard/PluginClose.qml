@@ -42,10 +42,12 @@ Flickable {
 
     property bool atBottom: true
 
+    state: "closed"
+
     onFlickStarted: {
         if (Math.abs( contentX ) < variationX && contentY < 0) {
             if (atBottom) {
-                MInputMethodQuick.userHide()
+                state = "closed"
             } else {
                 atBottom = true
             }
@@ -53,7 +55,7 @@ Flickable {
             if (atBottom) {
                 atBottom = false
             } else {
-                MInputMethodQuick.userHide()
+                state = "closed"
             }
         }
     }
