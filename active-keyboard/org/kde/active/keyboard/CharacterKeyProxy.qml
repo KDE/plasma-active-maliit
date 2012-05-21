@@ -40,13 +40,17 @@ MouseArea {
     preventStealing: true
     function keyAt(x, y)
     {
-        var child = keysContainer.childAt(x, y)
-        if (!child) {
-            return null
+        var child = keysContainer
+        var posChild = {"x": x, "y": y}
+        while (child) {
+            child = child.childAt(posChild.x, posChild.y)
+            if (!child) {
+                return null
+            } else if (child && child.objectName == "characterKey") {
+                return child
+            }
+            posChild = keysContainer.mapToItem(child, posChild.x, posChild.y)
         }
-        var posChild = keysContainer.mapToItem(child, x, y)
-        var grandChild = child.childAt(posChild.x, posChild.y)
-        return grandChild
     }
     property variant currentChild
     onPressed: {
@@ -71,8 +75,8 @@ MouseArea {
     }
     onPressAndHold: {
         if (currentChild && currentChild.pressAndHold) {
-            currentChild.pressAndHold(mouse)
-            if (accentsPopup.visible && currentChild.canceled) {
+            var eaten = currentChild.pressAndHold(mouse)
+            if (eaten && currentChild.canceled) {
                 currentChild.canceled()
             }
         }

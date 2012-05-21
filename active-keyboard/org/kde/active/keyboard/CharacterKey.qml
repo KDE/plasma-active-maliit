@@ -35,6 +35,7 @@ import "KeyboardUiConstants.js" as UI
 
 Item {
     id: aCharKey
+    objectName: "characterKey"
     property string caption: ""
     property string captionShifted: ""
     property int fontSize: UI.FONT_SIZE
@@ -79,6 +80,7 @@ Item {
         //not used at the moment
     }
 
+    //Returns true if the event was eaten and passed to the popup
     function pressAndHold(mouse) {
         if (isNormal && aCharKey.accents.length > 0) {
             var pos = aCharKey.mapToItem(vkb, 0, - aCharKey.height)
@@ -86,8 +88,10 @@ Item {
             accentsPopup.y = pos.y
             accentsPopup.x = Math.min(pos.x, vkb.width - accentsPopup.width)
             accentsPopup.visible = true
+            return true
         } else {
             charRepeater.start()
+            return false
         }
     }
 

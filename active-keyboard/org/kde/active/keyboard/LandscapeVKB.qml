@@ -108,7 +108,6 @@ PlasmaCore.FrameSvgItem {
                 CharacterKey {
                     width: keyWidth; height: keyHeight
                     caption: accentsPopup.accents[modelData]
-                    //onClicked: accentsPopup.visible = false
                 }
             }
         }
