@@ -40,16 +40,14 @@ Item {
     property int fontSize: UI.FONT_SIZE
     property string symView: ""
     property string symView2: ""
-    property bool pressed: false
+    property bool isPressed: false
     property string accents: ""
 
     property bool isNormal: !isShifted && !inSymView && !inSymView2
 
-    signal clicked
-
     PlasmaCore.FrameSvgItem {
         imagePath: "widgets/button"
-        prefix: aCharKey.pressed ? "pressed" : "normal"
+        prefix: aCharKey.isPressed ? "pressed" : "normal"
         anchors.fill: parent
     }
 
@@ -69,57 +67,51 @@ Item {
         anchors.horizontalCenter: parent.horizontalCenter
         y: pluginClose.atBottom ? parent.y - height : parent.height
         text: key_label.text
-        pressed: aCharKey.caption != "" && aCharKey.caption != " " && aCharKey.pressed
+        pressed: aCharKey.caption != "" && aCharKey.caption != " " && aCharKey.isPressed
     }
 
-    
-    MouseArea {
-        id: mouse_area
-        anchors.fill: parent
 
-        onPressed: {
-            aCharKey.pressed = true
-            if (isNormal && aCharKey.accents.length == 0) {
-                MInputMethodQuick.sendCommit(key_label.text)
-            }
+    function pressed(mouse) {
+        aCharKey.isPressed = true
+    }
+
+    function clicked(mouse) {
+        //not used at the moment
+    }
+
+    function pressAndHold(mouse) {
+        if (isNormal && aCharKey.accents.length > 0) {
+            var pos = aCharKey.mapToItem(vkb, 0, - aCharKey.height)
+            accentsPopup.accents = aCharKey.accents
+            accentsPopup.y = pos.y
+            accentsPopup.x = Math.min(pos.x, vkb.width - accentsPopup.width)
+            accentsPopup.visible = true
+        } else {
+            charRepeater.start()
         }
+    }
 
-        onClicked: {
-            if (isNormal && aCharKey.accents.length > 0) {
-                MInputMethodQuick.sendCommit(key_label.text)
-            }
-        }
+    function released(mouse) {
+        charRepeater.stop()
+        aCharKey.isPressed = false
+        MInputMethodQuick.sendCommit(key_label.text)
+        isShifted = isShiftLocked ? isShifted : false
+    }
 
-        onPressAndHold: {
-            if (isNormal && aCharKey.accents.length > 0) {
-                var pos = aCharKey.mapToItem(vkb, 0, - aCharKey.height)
-                accentsPopup.accents = aCharKey.accents
-                accentsPopup.y = pos.y
-                accentsPopup.x = Math.min(pos.x, vkb.width - accentsPopup.width)
-                accentsPopup.visible = true
-            } else {
-                charRepeater.start()
-            }
-        }
+    function canceled() {
+        charRepeater.stop()
+        aCharKey.isPressed = false
+    }
 
-        onReleased: {
-            charRepeater.stop()
-            aCharKey.pressed = false
-            isShifted = isShiftLocked ? isShifted : false
-            aCharKey.clicked()
-        }
-
-        onCanceled: {
-            charRepeater.stop()
-            aCharKey.pressed = false
-        }
-
-        onExited: charRepeater.stop()
+    function exited() {
+        charRepeater.stop()
+        aCharKey.isPressed = false
     }
 
     Timer {
         id: charRepeater
-        interval: 80; repeat: true
+        interval: 80
+        repeat: true
         triggeredOnStart: true
         onTriggered: MInputMethodQuick.sendCommit(key_label.text)
     }

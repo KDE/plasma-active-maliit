@@ -29,7 +29,7 @@
  *
  */
 
-import Qt 4.7
+import QtQuick 1.1
 import org.kde.plasma.core 0.1 as PlasmaCore
 import "KeyboardUiConstants.js" as UI
 
@@ -77,11 +77,13 @@ PlasmaCore.FrameSvgItem {
             }
         }
     }
-    //avoid to dismiss the keyboard
+
+    //only purpose: avoid keyboard dismiss on clisk
     MouseArea {
-        anchors.fill: parent
-        onClicked: mouse.accepted = true
+        anchors.fill: parent 
+        onPressed: mouse.accepted = true
     }
+
     //dismiss accents popup
     MouseArea {
         anchors.fill: parent
@@ -106,10 +108,13 @@ PlasmaCore.FrameSvgItem {
                 CharacterKey {
                     width: keyWidth; height: keyHeight
                     caption: accentsPopup.accents[modelData]
-                    onClicked: accentsPopup.visible = false
+                    //onClicked: accentsPopup.visible = false
                 }
             }
         }
+    }
+    CharacterKeyProxy {
+        keysContainer: accentsPopup
     }
 
     Column { //Holder for the VKB rows
@@ -160,7 +165,7 @@ PlasmaCore.FrameSvgItem {
 
         Row { //Row 3
             anchors.horizontalCenter: parent.horizontalCenter
-            spacing: 4
+            spacing: keyMargin
             z: pluginClose.atBottom ? 3 : 2
 
             FunctionKey {
@@ -189,17 +194,14 @@ PlasmaCore.FrameSvgItem {
                 }
             }
 
-            Row {
-                spacing: keyMargin
-                Repeater {
-                    model: row3
-                    CharacterKey {
-                        width: keyWidth; height: keyHeight
-                        caption: row3[index][0]
-                        captionShifted: row3[index][0].toUpperCase()
-                        symView: row3[index][1]
-                        symView2: row3[index][2]
-                    }
+            Repeater {
+                model: row3
+                CharacterKey {
+                    width: keyWidth; height: keyHeight
+                    caption: row3[index][0]
+                    captionShifted: row3[index][0].toUpperCase()
+                    symView: row3[index][1]
+                    symView2: row3[index][2]
                 }
             }
 
@@ -214,7 +216,7 @@ PlasmaCore.FrameSvgItem {
 
         Row { //Row 4
             anchors.horizontalCenter: parent.horizontalCenter
-            spacing: (columns == 11) ? 6 : 8
+            spacing: keyMargin
             z: pluginClose.atBottom ? 4 : 1
             FunctionKey {
                 width: 145; height: keyHeight
@@ -223,12 +225,9 @@ PlasmaCore.FrameSvgItem {
                 onClickedPass: inSymView = (!inSymView)
             }
 
-            Row {
-                spacing: keyMargin
-                CharacterKey { caption: ","; captionShifted: ","; width: 120; height: keyHeight }
-                CharacterKey { caption: " "; captionShifted: " "; width: 228; height: keyHeight }
-                CharacterKey { caption: "."; captionShifted: "."; width: 120; height: keyHeight }
-            }
+            CharacterKey { caption: ","; captionShifted: ","; width: 120; height: keyHeight }
+            CharacterKey { caption: " "; captionShifted: " "; width: 228; height: keyHeight }
+            CharacterKey { caption: "."; captionShifted: "."; width: 120; height: keyHeight }
 
             FunctionKey {
                 width: 145; height: keyHeight
@@ -240,4 +239,9 @@ PlasmaCore.FrameSvgItem {
             }
         } //end Row4
     }//end Column
+
+    CharacterKeyProxy {
+        keysContainer: mainColumn
+    }
+
 } //end VKB area
