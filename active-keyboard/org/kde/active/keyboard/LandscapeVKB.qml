@@ -73,7 +73,13 @@ PlasmaCore.FrameSvgItem {
                 easing.type: Easing.InOutQuad
             }
             ScriptAction {
-                script: if (!shown) MInputMethodQuick.userHide()
+                script: {
+                    if (!shown) {
+                        MInputMethodQuick.userHide()
+                    }
+                    MInputMethodQuick.setInputMethodArea(
+                         Qt.rect(vkb.x, vkb.y, vkb.width, vkb.height))
+                }
             }
         }
     }
