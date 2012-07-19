@@ -42,5 +42,5 @@ dist.commands += git archive HEAD --prefix=$$DIST_NAME/ | bzip2 > $$TARBALL_PATH
 dist.commands += md5sum $$TARBALL_PATH | cut -d \' \' -f 1 > $$DIST_PATH\\.md5
 
 im.files = maliitactiveinputmethod.sh
-im.path = /usr/env
+im.path = /etc/profile.d
 INSTALLS += im
