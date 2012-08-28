@@ -39,7 +39,12 @@ Rectangle {
     height: MInputMethodQuick.screenHeight
     color: "transparent"
     opacity: 1
-    onVisibleChanged: if (visible) pluginClose.state = "open"
+    onVisibleChanged: {
+        if (visible) {
+            pluginClose.state = "open"
+        } else {
+            pluginClose.state = "closed"
+        }
 
     Rectangle {
         id: root
