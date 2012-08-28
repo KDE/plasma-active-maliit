@@ -34,7 +34,7 @@ import "KeyboardUiConstants.js" as UI
 PlasmaCore.FrameSvgItem {
     id: popper
 
-    imagePath: "widgets/tooltip"
+    imagePath: "widgets/background"
     width: Math.max(popperText.paintedWidth, popperText.paintedHeight) + margins.left + margins.right
     height: Math.max(popperText.paintedWidth, popperText.paintedHeight) + margins.top + margins.bottom
     visible: false
