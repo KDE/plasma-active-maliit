@@ -45,6 +45,7 @@ Rectangle {
         } else {
             pluginClose.state = "closed"
         }
+    }
 
     Rectangle {
         id: root
