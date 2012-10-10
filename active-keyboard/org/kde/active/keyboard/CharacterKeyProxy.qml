@@ -63,7 +63,7 @@ MouseArea {
         }
     }
     onReleased: {
-        if (currentChild && currentChild.released) {
+        if (currentChild && currentChild.released && (!accentsPopup.visible || currentChild.accents.length == 0)) {
             currentChild.released(mouse)
         }
     }
