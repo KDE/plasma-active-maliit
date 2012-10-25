@@ -29,15 +29,14 @@
  *
  */
 
-import Qt 4.7
+import QtQuick 1.1
 import org.kde.active.keyboard 1.0
 
-Rectangle {
+Item {
     id: canvas
     transformOrigin: Item.Center
     width: MInputMethodQuick.screenWidth
     height: MInputMethodQuick.screenHeight
-    color: "transparent"
     opacity: 1
     onVisibleChanged: {
         if (visible) {
@@ -47,10 +46,9 @@ Rectangle {
         }
     }
 
-    Rectangle {
+    Item {
         id: root
         transformOrigin: Item.Center
-        color: "transparent"
         opacity: 1
         width: canvas.width
         height: canvas.height
@@ -58,6 +56,9 @@ Rectangle {
 
         PluginClose {
             id: pluginClose
+            onAtBottomChanged: {
+                MInputMethodQuick.setInputMethodArea(Qt.rect(vkb_landscape.x, vkb_landscape.y, vkb_landscape.width, vkb_landscape.height));
+            }
             MouseArea {
                 width: canvas.width
                 height: canvas.height
