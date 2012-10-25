@@ -43,8 +43,9 @@ Item {
     property string symView2: ""
     property bool isPressed: false
     property string accents: ""
+    property string accentsShifted: ""
 
-    property bool isNormal: !isShifted && !inSymView && !inSymView2
+    property bool isNormal: !inSymView && !inSymView2
 
     PlasmaCore.FrameSvgItem {
         imagePath: "widgets/button"
@@ -84,7 +85,7 @@ Item {
     function pressAndHold(mouse) {
         if (isNormal && aCharKey.accents.length > 0) {
             var pos = aCharKey.mapToItem(vkb, 0, - aCharKey.height)
-            accentsPopup.accents = aCharKey.accents
+            accentsPopup.accents = isShifted ? aCharKey.accentsShifted : aCharKey.accents
             accentsPopup.y = pos.y
             accentsPopup.x = Math.min(pos.x, vkb.width - accentsPopup.width)
             accentsPopup.visible = true

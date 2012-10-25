@@ -54,6 +54,9 @@ PlasmaCore.FrameSvgItem {
     property variant accents_row1: ["", "", "eèéêë", "", "tþ", "yý", "uûùúü", "iîïìí", "oöôòó", ""]
     property variant accents_row2: ["aäàâáãå", "", "dð", "", "", "", "", "", ""]
     property variant accents_row3: ["", "", "cç", "", "", "nñ", ""]
+    property variant accents_row1_shift: ["", "", "EÈÉÊË", "", "TÞ", "YÝ", "UÛÙÚÜ", "IÎÏÌÍ", "OÖÔÒÓ", ""]
+    property variant accents_row2_shift: ["AÄÀÂÁÃÅ", "", "DÐ", "", "", "", "", "", ""]
+    property variant accents_row3_shift: ["", "", "CÇ", "", "", "NÑ", ""]
 
     property int columns: Math.max(row1.length, row2.length, row3.length)
     property int keyWidth: (columns == 11) ? UI.landscapeWidthNarrow
@@ -114,6 +117,7 @@ PlasmaCore.FrameSvgItem {
                 CharacterKey {
                     width: keyWidth; height: keyHeight
                     caption: accentsPopup.accents[modelData]
+                    captionShifted: caption
                 }
             }
         }
@@ -145,6 +149,7 @@ PlasmaCore.FrameSvgItem {
                     symView: row1[index][1]
                     symView2: row1[index][2]
                     accents: accents_row1[index]
+                    accentsShifted: accents_row1_shift[index]
                 }
             }
 
@@ -163,7 +168,7 @@ PlasmaCore.FrameSvgItem {
                     symView: row2[index][1]
                     symView2: row2[index][2]
                     accents: accents_row2[index]
-                    
+                    accentsShifted: accents_row2_shift[index]
                 }
             }
         } //end Row2
