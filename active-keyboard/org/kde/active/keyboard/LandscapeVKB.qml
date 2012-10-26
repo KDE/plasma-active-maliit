@@ -49,7 +49,8 @@ PlasmaCore.FrameSvgItem {
     z: 100
     property variant row1:["q1€", "w2£", "e3$", "r4¥", "t5₹", "y6%", "u7<", "i8>", "o9[", "p0]"]
     property variant row2: ["a*`", "s#^", "d+|", "f-_", "g=§", "h({", "j)}", "k?¿", "l!¡"]
-    property variant row3: ["z@«", "x~»", "c/\"", "v\\“", "b'”", "n;„", "m:&", ".,,.", ":;;:"]
+    property variant row3: ["z@«", "x~»", "c/\"", "v\\“", "b'”", "n;„", "m:&", ".,,."]
+    property variant row4: [":;;:"]
     property variant accents_row1: ["", "", "eèéêë", "", "tþ", "yý", "uûùúü", "iîïìí", "oöôòó", ""]
     property variant accents_row2: ["aäàâáãå", "", "dð", "", "", "", "", "", ""]
     property variant accents_row3: ["", "", "cç", "", "", "nñ", ""]
@@ -268,10 +269,21 @@ PlasmaCore.FrameSvgItem {
                 onClickedPass: inSymView = (!inSymView)
             }
 
+            Repeater {
+                model: row4
+                CharacterKey {
+                    width: keyWidth; height: keyHeight
+                    caption: row4[index][0]
+                    captionShifted: row4[index][0].toUpperCase()
+                    symView: row4[index][1]
+                    symView2: row4[index][2]
+                }
+            }
+
             CharacterKey {
                 caption: " ";
                 captionShifted: " ";
-                width: keys2.width - symKey.width - keyWidth * 4 - (5 * keyMargin);
+                width: keys2.width - symKey.width - (row4.length * (keyWidth + keyMargin)) - keyWidth * 4 - (5 * keyMargin);
                 height: keyHeight
             }
 
