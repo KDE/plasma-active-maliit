@@ -167,7 +167,8 @@ PlasmaCore.FrameSvgItem {
             z: pluginClose.atBottom ? 2 : 3
             FunctionKey {
                 id: tabKey
-                width: keyWidth * 2;
+                width: row3.length > row2.length ? (keys3.width - row2.length * (keyWidth + keyMargin) - keyMargin) / 2
+                                                 : keyWidth * 2;
                 height: keyHeight
                 landscape: true
                 caption: inSymView ? 'Esc' : ''
@@ -198,6 +199,7 @@ PlasmaCore.FrameSvgItem {
         } //end Row2
 
         Row { //Row 3
+            id: keys3
             anchors {
                 left: parent.left
                 right: parent.right
@@ -209,7 +211,8 @@ PlasmaCore.FrameSvgItem {
 
             FunctionKey {
                 id: shiftKey
-                width: (keys2.width - row3.length * (keyWidth + keyMargin) - keyMargin) / 2;
+                width: row2.length > row3.length ? (keys2.width - row3.length * (keyWidth + keyMargin) - keyMargin) / 2
+                                                 : keyWidth * 2;
                 height: keyHeight
                 landscape: true
                 icon: inSymView ? ""
@@ -247,7 +250,7 @@ PlasmaCore.FrameSvgItem {
             }
 
             FunctionKey {
-                width: (keys2.width - row3.length * (keyWidth + keyMargin) - keyMargin) / 2;
+                width: shiftKey.width
                 height: keyHeight
                 landscape: true
                 repeat: true
