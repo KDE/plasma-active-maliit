@@ -81,7 +81,7 @@ PlasmaCore.FrameSvgItem {
                         MInputMethodQuick.userHide()
                     }
                     MInputMethodQuick.setInputMethodArea(
-                         Qt.rect(vkb.x, vkb.y, mainColumn.width, vkb.height))
+                         Qt.rect(vkb.x, vkb.y, vkb.width, vkb.height))
                 }
             }
         }
