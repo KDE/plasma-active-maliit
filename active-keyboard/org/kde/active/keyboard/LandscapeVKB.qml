@@ -173,7 +173,7 @@ PlasmaCore.FrameSvgItem {
                 caption: inSymView ? 'Esc' : ''
                 icon: inSymView ? '' : (isShifted) ? "icon-m-input-methods-untab.svg"
                                   : "icon-m-input-methods-tab.svg"
-                onClickedPass: MInputMethodQuick.sendCommit("\t")
+                onClickedPass: inSymView ? MInputMethodQuick.sendKey(Qt.Key_Escape) : MInputMethodQuick.sendCommit("\t")
             }
             Repeater {
                 model: row2
