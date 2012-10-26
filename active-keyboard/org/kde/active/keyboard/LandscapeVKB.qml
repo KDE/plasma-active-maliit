@@ -172,8 +172,9 @@ PlasmaCore.FrameSvgItem {
                 height: keyHeight
                 landscape: true
                 caption: inSymView ? 'Esc' : ''
-                icon: inSymView ? '' : (isShifted) ? "icon-m-input-methods-untab.svg"
-                                  : "icon-m-input-methods-tab.svg"
+                icon: inSymView ? ''
+                                : (isShifted) ? "icon-m-input-methods-tab-back.svg"
+                                              : "icon-m-input-methods-tab.svg"
                 onClickedPass: inSymView ? MInputMethodQuick.sendKey(Qt.Key_Escape) : MInputMethodQuick.sendCommit("\t")
             }
             Repeater {
