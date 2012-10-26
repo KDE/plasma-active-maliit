@@ -43,14 +43,13 @@ PlasmaCore.FrameSvgItem {
     property bool shown: pluginClose.state != "closed"
     onShownChanged: if (!shown) accentsPopup.visible = false
     property real translation: shown ? 0 : height
-    
 
     anchors.horizontalCenter: parent.horizontalCenter
 
     z: 100
     property variant row1:["q1€", "w2£", "e3$", "r4¥", "t5₹", "y6%", "u7<", "i8>", "o9[", "p0]"]
     property variant row2: ["a*`", "s#^", "d+|", "f-_", "g=§", "h({", "j)}", "k?¿", "l!¡"]
-    property variant row3: ["z@«", "x~»", "c/\"", "v\\“", "b'”", "n;„", "m:&"]
+    property variant row3: ["z@«", "x~»", "c/\"", "v\\“", "b'”", "n;„", "m:&", ".,,.", ":;;:"]
     property variant accents_row1: ["", "", "eèéêë", "", "tþ", "yý", "uûùúü", "iîïìí", "oöôòó", ""]
     property variant accents_row2: ["aäàâáãå", "", "dð", "", "", "", "", "", ""]
     property variant accents_row3: ["", "", "cç", "", "", "nñ", ""]
@@ -81,7 +80,7 @@ PlasmaCore.FrameSvgItem {
                         MInputMethodQuick.userHide()
                     }
                     MInputMethodQuick.setInputMethodArea(
-                         Qt.rect(vkb.x, vkb.y, vkb.width, vkb.height))
+                         Qt.rect(vkb.x, vkb.y, mainColumn.width, vkb.height))
                 }
             }
         }
@@ -156,9 +155,25 @@ PlasmaCore.FrameSvgItem {
         } //end Row1
 
         Row { //Row 2
-            anchors.horizontalCenter: parent.horizontalCenter
+            id: keys2
+            anchors {
+                left: parent.left
+                right: parent.right
+                leftMargin: parent.leftMargin * 2
+                rightMargin: parent.leftMargin * 2
+            }
             spacing: keyMargin
             z: pluginClose.atBottom ? 2 : 3
+            FunctionKey {
+                id: tabKey
+                width: keyWidth * 2;
+                height: keyHeight
+                landscape: true
+                caption: inSymView ? 'Esc' : ''
+                icon: inSymView ? '' : (isShifted) ? "icon-m-input-methods-untab.svg"
+                                  : "icon-m-input-methods-tab.svg"
+                onClickedPass: MInputMethodQuick.sendCommit("\t")
+            }
             Repeater {
                 model: row2
                 CharacterKey {
@@ -171,15 +186,30 @@ PlasmaCore.FrameSvgItem {
                     accentsShifted: accents_row2_shift[index]
                 }
             }
+            FunctionKey {
+                width: tabKey.width;
+                height: keyHeight
+                landscape: true
+                repeat: true
+                icon: "icon-m-input-methods-backspace.svg"
+                onClickedPass: MInputMethodQuick.sendCommit("\b");
+            }
         } //end Row2
 
         Row { //Row 3
-            anchors.horizontalCenter: parent.horizontalCenter
+            anchors {
+                left: parent.left
+                right: parent.right
+                leftMargin: parent.leftMargin * 2
+                rightMargin: parent.leftMargin * 2
+            }
             spacing: keyMargin
             z: pluginClose.atBottom ? 3 : 2
 
             FunctionKey {
-                width: 110; height: keyHeight
+                id: shiftKey
+                width: (keys2.width - row3.length * (keyWidth + keyMargin) - keyMargin) / 2;
+                height: keyHeight
                 landscape: true
                 icon: inSymView ? ""
                     : (isShiftLocked) ? "icon-m-input-methods-capslock.svg"
@@ -216,11 +246,13 @@ PlasmaCore.FrameSvgItem {
             }
 
             FunctionKey {
-                width: 110; height: keyHeight
+                width: (keys2.width - row3.length * (keyWidth + keyMargin) - keyMargin) / 2;
+                height: keyHeight
                 landscape: true
                 repeat: true
-                icon: "icon-m-input-methods-backspace.svg"
-                onClickedPass: MInputMethodQuick.sendCommit("\b");
+                icon: MInputMethodQuick.actionKeyOverride.icon
+                caption: MInputMethodQuick.actionKeyOverride.label
+                onClickedPass: MInputMethodQuick.activateActionKey()
             }
         } //end Row3
 
@@ -229,23 +261,43 @@ PlasmaCore.FrameSvgItem {
             spacing: keyMargin
             z: pluginClose.atBottom ? 4 : 1
             FunctionKey {
+                id: symKey
                 width: 145; height: keyHeight
                 landscape: true
                 caption: inSymView ? "ABC" : "?123"
                 onClickedPass: inSymView = (!inSymView)
             }
 
-            CharacterKey { caption: ","; captionShifted: ","; width: 120; height: keyHeight }
-            CharacterKey { caption: " "; captionShifted: " "; width: 228; height: keyHeight }
-            CharacterKey { caption: "."; captionShifted: "."; width: 120; height: keyHeight }
+            CharacterKey {
+                caption: " ";
+                captionShifted: " ";
+                width: keys2.width - symKey.width - keyWidth * 4 - (5 * keyMargin);
+                height: keyHeight
+            }
 
             FunctionKey {
-                width: 145; height: keyHeight
+                width: keyWidth; height: keyHeight
                 landscape: true
-                repeat: true
-                icon: MInputMethodQuick.actionKeyOverride.icon
-                caption: MInputMethodQuick.actionKeyOverride.label
-                onClickedPass: MInputMethodQuick.activateActionKey()
+                icon: "icon-m-input-methods-up.svg"
+                onClickedPass: MInputMethodQuick.sendKey(Qt.Key_Up)
+            }
+            FunctionKey {
+                width: keyWidth; height: keyHeight
+                landscape: true
+                icon: "icon-m-input-methods-down.svg"
+                onClickedPass: MInputMethodQuick.sendKey(Qt.Key_Down)
+            }
+            FunctionKey {
+                width: keyWidth; height: keyHeight
+                landscape: true
+                icon: "icon-m-input-methods-left.svg"
+                onClickedPass: MInputMethodQuick.sendKey(Qt.Key_Left)
+            }
+            FunctionKey {
+                width: keyWidth; height: keyHeight
+                landscape: true
+                icon: "icon-m-input-methods-right.svg"
+                onClickedPass: MInputMethodQuick.sendKey(Qt.Key_Right)
             }
         } //end Row4
     }//end Column
@@ -253,5 +305,4 @@ PlasmaCore.FrameSvgItem {
     CharacterKeyProxy {
         keysContainer: mainColumn
     }
-
 } //end VKB area

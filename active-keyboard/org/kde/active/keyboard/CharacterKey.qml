@@ -64,6 +64,24 @@ Item {
         text: (inSymView && symView.length) > 0 ? (inSymView2 ? symView2 : symView) : (isShifted ? captionShifted : caption)
     }
 
+    Text {
+        id: alt_hint
+        anchors {
+            right: parent.right
+            top: parent.top
+
+            rightMargin: 3
+        }
+
+        horizontalAlignment: Text.AlignHCenter
+        verticalAlignment: Text.AlignVCenter
+        font.family: theme.smallestFont.family
+        font.pixelSize: theme.smallestFont.pixelSize
+        color: theme.textColor
+        opacity: 0.5
+        text: (inSymView && symView.length) > 0 ? (inSymView2 ? symView : symView2) : (symView ? symView : (captionShifted == caption ? '' : (isShifted ? caption : captionShifted)))
+    }
+
     Popper {
         id: popper
         anchors.horizontalCenter: parent.horizontalCenter
@@ -120,4 +138,5 @@ Item {
         triggeredOnStart: true
         onTriggered: MInputMethodQuick.sendCommit(key_label.text)
     }
+
 }
